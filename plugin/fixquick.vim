@@ -17,7 +17,6 @@ function <SID>QuickFixToggle(prefix)
         " If we're not in a quickfix buffer, try to open a quickfix of the
         " requested type.
         execute a:prefix . 'open'
-		execute "nnoremap <silent> <buffer> q :". a:prefix ."close<CR>"
     endif
 endfunction
 
