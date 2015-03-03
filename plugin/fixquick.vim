@@ -2,7 +2,7 @@
 "
 " I haven't figured out how to just toggle, but this is the closest. If we're
 " in the quickfix/locationlist, close it. Otherwise open it.
-function <SID>QuickFixToggle(prefix)
+function! s:QuickFixToggle(prefix)
     if len(a:prefix) != 1
         echoerr 'QuickFixToggle requires the prefix of l or c'
         return
@@ -20,8 +20,24 @@ function <SID>QuickFixToggle(prefix)
     endif
 endfunction
 
+function! s:SplitIfNecessaryAndJump()
+
+    try
+        .cc
+    catch /^Vim\%((\a\+)\)\=:E37/	" No write since last change
+        " Theoretically equivalent to: execute "normal! \<C-w>\<CR>"
+        " But that doesn't work.
+        split
+        wincmd p
+        .cc
+    endtry
+endf
+
+
 nnoremap <silent> <Plug>(fixquick-toggle-quickfix) :call <SID>QuickFixToggle('c')<CR>
 nnoremap <silent> <Plug>(fixquick-toggle-locationlist) :call <SID>QuickFixToggle('l')<CR>
+
+nnoremap <silent> <Plug>(fixquick-jump-to-selected) :call <SID>SplitIfNecessaryAndJump()<CR>
 
 " Make it easier to turn these off in case I'm troubleshooting mappings.
 if (! exists('no_plugin_maps') || ! no_plugin_maps) &&
