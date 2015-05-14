@@ -33,9 +33,20 @@ function! s:SplitIfNecessaryAndJump()
     endtry
 endf
 
+function! s:PreviewToggle()
+    if &previewwindow
+        " If we're already in a preview window, then close it.
+        pclose
+    else
+        " If we're not in a preview window, try to open it.
+        wincmd P
+    endif
+endf
+
 
 nnoremap <silent> <Plug>(fixquick-toggle-quickfix) :call <SID>QuickFixToggle('c')<CR>
 nnoremap <silent> <Plug>(fixquick-toggle-locationlist) :call <SID>QuickFixToggle('l')<CR>
+nnoremap <silent> <Plug>(fixquick-toggle-preview) :call <SID>PreviewToggle()<CR>
 
 nnoremap <silent> <Plug>(fixquick-jump-to-selected) :call <SID>SplitIfNecessaryAndJump()<CR>
 
@@ -44,4 +55,5 @@ if (! exists('no_plugin_maps') || ! no_plugin_maps) &&
       \ (! exists('no_fixquick_maps') || ! no_fixquick_maps)
     nmap <unique> <Leader>wq <Plug>(fixquick-toggle-quickfix)
     nmap <unique> <Leader>wl <Plug>(fixquick-toggle-locationlist)
+    nmap <unique> <Leader>wP <Plug>(fixquick-toggle-preview)
 endif
