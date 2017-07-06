@@ -17,19 +17,23 @@ function! s:QuickFixToggle(prefix)
         " If we're not in a quickfix buffer, try to open a quickfix of the
         " requested type.
         execute a:prefix . 'open'
+        let b:fixquick_prefix = a:prefix
     endif
 endfunction
 
 function! s:SplitIfNecessaryAndJump()
+    let prefix = b:fixquick_prefix
 
+    " .cc or .ll depending on the quickfix type.
+    let display_error_cmd = '.'. prefix . prefix
     try
-        .cc
+        execute display_error_cmd
     catch /^Vim\%((\a\+)\)\=:E37/	" No write since last change
         " Theoretically equivalent to: execute "normal! \<C-w>\<CR>"
         " But that doesn't work.
         split
         wincmd p
-        .cc
+        execute display_error_cmd
     endtry
 endf
 

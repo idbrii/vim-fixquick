@@ -1,3 +1,7 @@
+if !exists("b:fixquick_prefix")
+    let b:fixquick_prefix = 'c'
+endif
+
 if (! exists('no_plugin_maps') || ! no_plugin_maps) &&
             \ (! exists('no_fixquick_maps') || ! no_fixquick_maps)
 
@@ -12,8 +16,8 @@ if (! exists('no_plugin_maps') || ! no_plugin_maps) &&
     nmap <buffer> <CR> <Plug>(fixquick-jump-to-selected)
 
     " Similar to mapping bp/bn: traversing quickfix "buffers".
-    nnoremap <buffer> <A-Left>  :colder<CR>
-    nnoremap <buffer> <A-Right> :cnewer<CR>
+    exec 'nnoremap <buffer> <A-Left>  :'. b:fixquick_prefix .'older<CR>'
+    exec 'nnoremap <buffer> <A-Right> :'. b:fixquick_prefix .'newer<CR>'
 
     " Easy quit.
     nnoremap <silent> <buffer> q :close<CR>
