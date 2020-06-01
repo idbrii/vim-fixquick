@@ -1,5 +1,9 @@
 if !exists("b:fixquick_prefix")
-    let b:fixquick_prefix = 'c'
+    if get(getloclist(0, {'winid':0}), 'winid', 0) == win_getid()
+        let b:fixquick_prefix = 'l'
+    else
+        let b:fixquick_prefix = 'c'
+    endif
 endif
 
 if (! exists('no_plugin_maps') || ! no_plugin_maps) &&
