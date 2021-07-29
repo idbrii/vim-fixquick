@@ -44,3 +44,16 @@ configure it to apply this sort only when the build completes:
 
     let g:asyncrun_exit = 'call fixquick#sort#sort_by_buffers()'
 
+
+## Resize Quickfix To Error Count
+
+`call fixquick#window#resize_qf_to_errorcount(minheight, maxheight)` to resize
+the quickfix to match the number of errors.
+
+If 'errorformat' doesn't use `%t` (parse the type of error), then it includes all
+entries with corresponding files as errors.
+
+You can make this behaviour automatic with an autocmd:
+
+    au QuickfixCmdPost make call fixquick#window#resize_qf_to_errorcount(3, 20)
+
