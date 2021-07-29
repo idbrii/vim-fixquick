@@ -57,3 +57,21 @@ You can make this behaviour automatic with an autocmd:
 
     au QuickfixCmdPost make call fixquick#window#resize_qf_to_errorcount(3, 20)
 
+
+## `:copen` Without Moving Cursor
+
+`fixquick#window#copen_without_moving_cursor()` opens the quickfix window but
+keeps the cursor at its current location.
+
+If you only want the quickfix open if it contains entries, you can append
+`:cwindow`:
+
+    call fixquick#window#copen_without_moving_cursor() | cwindow
+
+
+## Show Last Error Without Jump
+
+Set the selected entry (and view it in the quickfix window) to be the last
+entry in the quickfix.
+
+`fixquick#window#show_last_error_without_jump()`
