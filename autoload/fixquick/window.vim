@@ -32,7 +32,15 @@ function! fixquick#window#copen_without_moving_cursor() abort
     endif
 endf
 
+function! fixquick#window#show_first_error_without_jump() abort
+    call fixquick#window#show_error_without_jump('cfirst', 'cnext')
+endf
+
 function! fixquick#window#show_last_error_without_jump() abort
+    call fixquick#window#show_error_without_jump('clast', 'cprev')
+endf
+
+function! fixquick#window#show_error_without_jump(dest, next) abort
     let only_errors = filter(getqflist(), { k,v -> v.bufnr != 0 })
     if empty(only_errors)
         " Avoid jumping anywhere if there's no error to jump to.
@@ -42,11 +50,11 @@ function! fixquick#window#show_last_error_without_jump() abort
     let winview = winsaveview()
     let winnr = winnr()
     let bufnr = bufnr()
-    " to last line
-    keepalt keepjumps clast
+    " to end of buffer
+    exec 'keepalt keepjumps' a:dest
     try
-        " to last actual error
-        keepalt keepjumps cprev
+        " to actual error
+        exec 'keepalt keepjumps' a:next
     catch /^Vim\%((\a\+)\)\=:E553/	" Error: No more items
     endtry
     call execute(winnr ..'wincmd w')

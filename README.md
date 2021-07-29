@@ -69,9 +69,17 @@ If you only want the quickfix open if it contains entries, you can append
     call fixquick#window#copen_without_moving_cursor() | cwindow
 
 
-## Show Last Error Without Jump
+## Show First/Last Error Without Jump
 
-Set the selected entry (and view it in the quickfix window) to be the last
-entry in the quickfix.
+Select the first/last entry in the quickfix -- it will be visible in the
+quickfix and `:cnext` will jump to the following error. 
 
-`fixquick#window#show_last_error_without_jump()`
+Showing the first error is useful when you have a bunch of preamble before your
+errors show up.
+
+Showing the last error is useful for languages like Python where stacktraces
+have the most relevant locations at the bottom. Or if you're loading a log file
+into the quickfix and want to inspect the last message/callstack first.
+
+    fixquick#window#show_first_error_without_jump()
+    fixquick#window#show_last_error_without_jump()
