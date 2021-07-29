@@ -70,7 +70,7 @@ endf
 "
 " I haven't figured out how to just toggle, but this is the closest. If we're
 " in the quickfix/locationlist, close it. Otherwise open it.
-function! fixquick#window#quick_fix_toggle(prefix)
+function! fixquick#window#quick_fix_toggle(prefix) abort
     if len(a:prefix) != 1
         echoerr 'QuickFixToggle requires the prefix of l or c'
         return
@@ -90,7 +90,7 @@ function! fixquick#window#quick_fix_toggle(prefix)
 endfunction
 
 
-function! fixquick#window#split_if_necessary_and_jump()
+function! fixquick#window#split_if_necessary_and_jump() abort
     let prefix = b:fixquick_prefix
 
     " .cc or .ll depending on the quickfix type.
@@ -107,7 +107,7 @@ function! fixquick#window#split_if_necessary_and_jump()
 endf
 
 
-function! fixquick#window#preview_toggle()
+function! fixquick#window#preview_toggle() abort
     if &previewwindow
         " If we're already in a preview window, then close it.
         pclose
