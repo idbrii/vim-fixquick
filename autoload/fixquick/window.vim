@@ -1,3 +1,6 @@
+" fixquick - utilities for the quickfix
+
+
 " Resize the quickfix to match the number of entries marked as errors. If
 " errorformat doesn't use %t (parse the type of error), then it counts all
 " entries as errors.
@@ -62,3 +65,54 @@ function! fixquick#window#show_error_without_jump(dest, next) abort
     call winrestview(winview) 
 endf
 
+
+" Quickly open/close quickfix
+"
+" I haven't figured out how to just toggle, but this is the closest. If we're
+" in the quickfix/locationlist, close it. Otherwise open it.
+function! fixquick#window#quick_fix_toggle(prefix)
+    if len(a:prefix) != 1
+        echoerr 'QuickFixToggle requires the prefix of l or c'
+        return
+    endif
+
+    if &buftype == 'quickfix'
+        " If we're already in a quickfix window, then we should close it.
+        " We use [cl]close instead of :quit to ensure that we close the
+        " requested window.
+        execute a:prefix . 'close'
+    else
+        " If we're not in a quickfix buffer, try to open a quickfix of the
+        " requested type.
+        execute a:prefix . 'open'
+        let b:fixquick_prefix = a:prefix
+    endif
+endfunction
+
+
+function! fixquick#window#split_if_necessary_and_jump()
+    let prefix = b:fixquick_prefix
+
+    " .cc or .ll depending on the quickfix type.
+    let display_error_cmd = '.'. prefix . prefix
+    try
+        execute display_error_cmd
+    catch /^Vim\%((\a\+)\)\=:E37/	" No write since last change
+        " Theoretically equivalent to: execute "normal! \<C-w>\<CR>"
+        " But that doesn't work.
+        split
+        wincmd p
+        execute display_error_cmd
+    endtry
+endf
+
+
+function! fixquick#window#preview_toggle()
+    if &previewwindow
+        " If we're already in a preview window, then close it.
+        pclose
+    else
+        " If we're not in a preview window, try to open it.
+        wincmd P
+    endif
+endf
