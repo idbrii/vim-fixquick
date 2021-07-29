@@ -24,5 +24,5 @@ if (! exists('no_plugin_maps') || ! no_plugin_maps) &&
     exec 'nnoremap <buffer> <A-Right> :'. b:fixquick_prefix .'newer<CR>'
 
     " Easy quit.
-    nnoremap <silent> <buffer> q :close<CR>
+    nnoremap <silent> <buffer> gq :close<CR>
 endif
