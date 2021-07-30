@@ -7,7 +7,7 @@
 function! fixquick#window#resize_qf_to_errorcount(minimum_height, maximum_height) abort
     let qf = getqflist()
     if empty(qf)
-        return
+        return 0
     endif
     
     if &errorformat =~# '%t'
@@ -21,10 +21,24 @@ function! fixquick#window#resize_qf_to_errorcount(minimum_height, maximum_height
     let qf_winid = getqflist({'winid' : 1}).winid
     if qf_winid == 0
         cwindow
+        let qf_winid = getqflist({'winid' : 1}).winid
+    endif
+
+    if qf_winid == 0
+        " No qf window to resize.
+        return 0
+    endif
+    
+    if winheight(qf_winid) > (&lines - 10)
+        " qf window exists but is using most of the screen. Probably has no
+        " windows above or below it and :resize would change the entire
+        " visible area and look broken. Do nothing instead.
+        return 0
     endif
     
     let height = fixquick#math#clamp(a:minimum_height, a:maximum_height, n_errors)
     exec qf_winid 'resize ' height
+    return 1
 endf
 
 function! fixquick#window#copen_without_moving_cursor() abort
