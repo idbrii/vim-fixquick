@@ -83,3 +83,29 @@ into the quickfix and want to inspect the last message/callstack first.
 
     fixquick#window#show_first_error_without_jump()
     fixquick#window#show_last_error_without_jump()
+
+
+# Tips
+
+I'd recommend finding mappings for both `:cnext` `:cnfile` and their analogs.
+This makes it easy to both jump through the error list and skip over files
+(like when cpp compilers report errors on every line after the first real
+error).
+
+I use PageUp/Down:
+
+    " Ctrl+PgUp/Dn - Move between quickfix marks. Jump to current first to
+    " ensure we always jump to something.
+    nnoremap <C-PageDown> :cc<Bar>cnext<CR>
+    nnoremap <C-PageUp> :cc<Bar>:cprev<CR>
+    " Alt+PgUp/Dn - Move between quickfix files
+    nnoremap <A-PageDown> :cnfile<CR>
+    nnoremap <A-PageUp> :cpfile<CR>
+    " Ctrl+Alt+PgUp/Dn - Move between location window marks
+    nnoremap <C-A-PageDown> :lnext<CR>
+    nnoremap <C-A-PageUp> :lprev<CR>
+    " Ctrl+Shift+PgUp/Dn - Move between files
+    nnoremap <C-S-PageDown> :next<CR>
+    nnoremap <C-S-PageUp> :prev<CR>
+
+You could also use [vim-unimpaired](https://github.com/tpope/vim-unimpaired).
