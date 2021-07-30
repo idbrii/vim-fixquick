@@ -53,6 +53,7 @@ function! fixquick#window#show_error_without_jump(dest, next) abort
     let winview = winsaveview()
     let winnr = winnr()
     let bufnr = bufnr()
+    split
     " to end of buffer
     exec 'keepalt keepjumps' a:dest
     try
@@ -60,6 +61,7 @@ function! fixquick#window#show_error_without_jump(dest, next) abort
         exec 'keepalt keepjumps' a:next
     catch /^Vim\%((\a\+)\)\=:E553/	" Error: No more items
     endtry
+    close
     call execute(winnr ..'wincmd w')
     call execute('keepalt '.. bufnr ..'buffer')
     call winrestview(winview) 
