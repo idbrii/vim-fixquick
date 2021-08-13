@@ -8,7 +8,7 @@ function! s:cmp(left, right) abort
     endif
 endf
 
-function! fixquick#sort#compare_qf_entries(left, right) abort
+function! fixquick#sort#cmp_prioritize_error_or_listed(left, right) abort
     if a:left.bufnr == 0 || a:right.bufnr == 0
         " Maintain order for unlisted
         return s:cmp(a:left.qforder, a:right.qforder)
@@ -32,6 +32,6 @@ function! fixquick#sort#sort_by_buffers() abort
     for i in range(0, len(qf)-1)
         let qf[i].qforder = i
     endfor
-    let qf = qf->sort("fixquick#sort#compare_qf_entries")
+    let qf = qf->sort("fixquick#sort#cmp_prioritize_error_or_listed")
     call setqflist(qf)
 endf
