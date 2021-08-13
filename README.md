@@ -45,6 +45,12 @@ configure it to apply this sort only when the build completes:
     let g:asyncrun_exit = 'call fixquick#sort#sort_by_buffers()'
 
 
+## Remove duplicate file+line+col entries from Quickfix
+
+`call fixquick#sort#remove_multiple_for_same_position()` to remove quickfix entries
+that are for the same file, line, and column.
+
+
 ## Resize Quickfix To Error Count
 
 `call fixquick#window#resize_qf_to_errorcount(minheight, maxheight)` to resize
