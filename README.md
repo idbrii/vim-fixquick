@@ -15,7 +15,7 @@ And quickfix maps:
     <A-Right> :cnewer<CR>
 
     " Easy quit.
-    q :close<CR>
+    gq :close<CR>
 
 
 # Helper functions
