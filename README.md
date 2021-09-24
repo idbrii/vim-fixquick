@@ -91,6 +91,20 @@ into the quickfix and want to inspect the last message/callstack first.
     fixquick#window#show_last_error_without_jump()
 
 
+## Show Next or Current Error
+
+It's useful to have mappings to show next error, but "E553: No more items"
+often isn't helpful -- you still want to jump to something. Use `jump_to_next`
+to you jump to next and jump to the last item when navigating past the end of
+the list.
+
+    nnoremap <silent> <C-PageDown> :call fixquick#window#jump_to_next(1)<CR>
+    nnoremap <silent> <C-PageUp>   :call fixquick#window#jump_to_next(-1)<CR>
+
+Similar to mapping to `:cc<Bar>cnext<CR>`, but you jump at most once so your
+current window remains the target for the jump.
+
+
 # Tips
 
 I'd recommend finding mappings for both `:cnext` `:cnfile` and their analogs.
@@ -102,8 +116,8 @@ I use PageUp/Down:
 
     " Ctrl+PgUp/Dn - Move between quickfix marks. Jump to current first to
     " ensure we always jump to something.
-    nnoremap <C-PageDown> :cc<Bar>cnext<CR>
-    nnoremap <C-PageUp> :cc<Bar>:cprev<CR>
+    nnoremap <silent> <C-PageDown> :call fixquick#window#jump_to_next(1)<CR>
+    nnoremap <silent> <C-PageUp>   :call fixquick#window#jump_to_next(-1)<CR>
     " Alt+PgUp/Dn - Move between quickfix files
     nnoremap <A-PageDown> :cnfile<CR>
     nnoremap <A-PageUp> :cpfile<CR>

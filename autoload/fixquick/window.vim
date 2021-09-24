@@ -41,6 +41,21 @@ function! fixquick#window#resize_qf_to_errorcount(minimum_height, maximum_height
     return 1
 endf
 
+function! fixquick#window#jump_to_next(direction) abort
+    try
+        if a:direction > 0
+            cnext
+        else
+            cprev
+        endif
+    catch /^Vim\%((\a\+)\)\=:E553/	" Error: No more items
+        " Print first so if cc changes files, it clobbers our output and we
+        " avoid "press enter".
+        echo "No more items"
+        cc
+    endtry
+endf
+
 function! fixquick#window#copen_without_moving_cursor() abort
     let must_go_back = &buftype != 'quickfix'
     keepalt keepjumps copen
