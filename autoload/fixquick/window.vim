@@ -72,6 +72,27 @@ function! fixquick#window#show_last_error_without_jump() abort
     call fixquick#window#show_error_without_jump('clast', 'cprev')
 endf
 
+" From a qf list, find the index of the first error that's a readable file.
+" Useful to skip over internal files (python's frozen or love2d's boot.lua).
+function! fixquick#window#find_first_readable_error(err_list, next) abort
+    let err_index = 1
+    if a:next == 'cnext'
+        let indexes = range(0, len(a:err_list)-1)
+    elseif a:next == 'cprev'
+        let indexes = range(len(a:err_list)-1, 0, -1)
+    else
+        echoerr "Unexpected value for argument 'next': ".. a:next
+        return -1
+    endif
+    for i in indexes
+        if bufname(a:err_list[i].bufnr)->filereadable()
+            break
+        endif
+        let err_index += 1
+    endfor
+    return err_index
+endf
+
 function! fixquick#window#show_error_without_jump(dest, next) abort
     let only_errors = filter(getqflist(), { k,v -> v.bufnr != 0 })
     if empty(only_errors)
@@ -86,8 +107,9 @@ function! fixquick#window#show_error_without_jump(dest, next) abort
     " to end of buffer
     exec 'keepalt keepjumps' a:dest
     try
+        let err_index = fixquick#window#find_first_readable_error(only_errors, a:next)
         " to actual error
-        exec 'keepalt keepjumps' a:next
+        exec 'keepalt keepjumps' err_index a:next
     catch /^Vim\%((\a\+)\)\=:E553/	" Error: No more items
     endtry
     close
