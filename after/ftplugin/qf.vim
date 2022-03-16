@@ -16,9 +16,6 @@ if (! exists('no_plugin_maps') || ! no_plugin_maps) &&
         endfor
     endif
 
-    " A do-what-I-mean jump to selected: open in new window instead of error.
-    nmap <buffer> <CR> <Plug>(fixquick-jump-to-selected)
-
     " Similar to mapping bp/bn: traversing quickfix "buffers".
     exec 'nnoremap <buffer> <A-Left>  :'. b:fixquick_prefix .'older<CR>'
     exec 'nnoremap <buffer> <A-Right> :'. b:fixquick_prefix .'newer<CR>'

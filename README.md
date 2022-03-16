@@ -129,3 +129,6 @@ I use PageUp/Down:
     nnoremap <C-S-PageUp> :prev<CR>
 
 You could also use [vim-unimpaired](https://github.com/tpope/vim-unimpaired).
+
+Use `set switchbuf+=split` to split instead of showing errors when navigating quickfix.
+

@@ -143,23 +143,6 @@ function! fixquick#window#quick_fix_toggle(prefix) abort
 endfunction
 
 
-function! fixquick#window#split_if_necessary_and_jump() abort
-    let prefix = b:fixquick_prefix
-
-    " .cc or .ll depending on the quickfix type.
-    let display_error_cmd = '.'. prefix . prefix
-    try
-        execute display_error_cmd
-    catch /^Vim\%((\a\+)\)\=:E37/	" No write since last change
-        " Theoretically equivalent to: execute "normal! \<C-w>\<CR>"
-        " But that doesn't work.
-        split
-        wincmd p
-        execute display_error_cmd
-    endtry
-endf
-
-
 function! fixquick#window#preview_toggle() abort
     if &previewwindow
         " If we're already in a preview window, then close it.
