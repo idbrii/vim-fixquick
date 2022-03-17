@@ -103,6 +103,11 @@ function! fixquick#window#show_error_without_jump(dest, next) abort
     let winview = winsaveview()
     let winnr = winnr()
     let bufnr = bufnr()
+    " switchbuf=split causes an extra split left behind. switchbuf=useopen
+    " might open in something aside from our split.
+    let switchbuf_bak = &switchbuf
+    let &switchbuf = ''
+    
     split
     " to end of buffer
     exec 'keepalt keepjumps' a:dest
@@ -113,6 +118,8 @@ function! fixquick#window#show_error_without_jump(dest, next) abort
     catch /^Vim\%((\a\+)\)\=:E553/	" Error: No more items
     endtry
     close
+    
+    let &switchbuf = switchbuf_bak
     call execute(winnr ..'wincmd w')
     call execute('keepalt '.. bufnr ..'buffer')
     call winrestview(winview) 
